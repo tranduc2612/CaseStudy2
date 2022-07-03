@@ -1,0 +1,16 @@
+{
+  "name": "casestudy2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "readline-sync": "^1.4.10",
+    "prompt-sync-history": "^1.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "ts": "ts-node main.ts"
+  },
+  "author": "",
+  "license": "ISC"
+}
