@@ -59,11 +59,15 @@ export default class AccountController{
         let inputAccount = rl.question("Account:");
         let inputPassword = rl.question("Password:");
         let isLogin = this.listUser.some(e=>e.userAcount == inputAccount && e.userPassWord == inputPassword)
-        if(isLogin){
-            const theMenu = new Menu(inputAccount,inputPassword, this)
-            theMenu.mainMenu()
-        }else{
-            console.log("Account or Password are wrong !");
+        try {
+            if(isLogin){
+                const theMenu = new Menu(inputAccount,inputPassword, this)
+                theMenu.mainMenu()
+            }else{
+                throw new Error("Account or Password are wrong !");
+            }
+        } catch (e:any) {
+            console.log(e.message)  ;
         }
         // this.login()
         console.log("---------------------------------------")
@@ -133,18 +137,22 @@ export default class AccountController{
     }
     
     public changePassword(Account: string,checkPassword: string){
-        if(!this.validatePassWord(checkPassword)){
-            console.log("Password must has minimum eight characters, at least one letter and one number !\n");
-        }else{
-            let newPassword = checkPassword
-            this.listUser.forEach(e=>{
-                if(e.userAcount == Account){
-                    e.userPassWord = newPassword;
-                }
-            })
-            console.log("-------------------Change password Success------------------------")
-
+        try {
+            if(!this.validatePassWord(checkPassword)){
+                throw new Error("Password must has minimum eight characters, at least one letter and one number !\n");
+            }else{
+                let newPassword = checkPassword
+                this.listUser.forEach(e=>{
+                    if(e.userAcount == Account){
+                        e.userPassWord = newPassword;
+                    }
+                })
+                console.log("-------------------Change password Success------------------------")
+            }
+        } catch (error: any) {
+            console.log(error.message)
         }
+        
     }
 
     validatePassWord(inputPassword : string){

@@ -35,17 +35,22 @@ export default class MachineController{
 
     public updateMachine(value: number) : void{
         let indexInput = value;
-        if(this.arrMachine.findIndex((e,index)=>indexInput == index) != -1){
-            let newName = rl.question("Update machine name: ");
-            let newStatus = rl.question("Update machine status: ");
-            let newTimeUsed = parseInt(rl.question("Update machine time use: "));
-            this.arrMachine[indexInput] = new Machine(newName,newStatus,newTimeUsed,0)
-            this.fileMachine.writeFile(this.PATH,this.arrMachine)
-            console.log("----------------Update Success---------------")
-            this.displayMachines()
-        }else{
-            console.log("Error index !")
+        try {
+            if(this.arrMachine.findIndex((e,index)=>indexInput == index) != -1){
+                let newName = rl.question("Update machine name: ");
+                let newStatus = rl.question("Update machine status: ");
+                let newTimeUsed = parseInt(rl.question("Update machine time use: "));
+                this.arrMachine[indexInput] = new Machine(newName,newStatus,newTimeUsed,0)
+                this.fileMachine.writeFile(this.PATH,this.arrMachine)
+                console.log("----------------Update Success---------------")
+                this.displayMachines()
+            }else{
+                throw new Error("Error index !")
+            }
+        } catch (err:any) {
+            console.log(err.message);
         }
+        
     }
 
     public deleteMachine(value: number){
@@ -57,12 +62,16 @@ export default class MachineController{
 
     public addService(index:number,price: number){
         let indexInput = index;
-        if(this.arrMachine.findIndex((e,index)=>indexInput == index) != -1){
-            this.arrMachine[indexInput].totalMoney += price;
-            this.fileMachine.writeFile(this.PATH,this.arrMachine)
-            console.table(this.arrMachine)
-        }else{
-            console.log("Error index !")
+        try{
+            if(this.arrMachine.findIndex((e,index)=>indexInput == index) != -1){
+                this.arrMachine[indexInput].totalMoney += price;
+                this.fileMachine.writeFile(this.PATH,this.arrMachine)
+                console.table(this.arrMachine)
+            }else{
+                throw new Error("Error index !")
+            }
+        }catch(error: any){
+            console.log(error.message)
         }
     }
 
@@ -94,11 +103,17 @@ export default class MachineController{
             count++;
             return str == "available"
         })
-        if(count != 0){
-            console.table(newArr)
-        }else{
-            console.log("No machines available !")
+
+        try {
+            if(count != 0){
+                console.table(newArr)
+            }else{
+                throw new Error("No machines available !")
+            }
+        } catch (error:any) {
+            console.log(error.message)
         }
+        
     }
 
     public sumRevenue(): number {
@@ -117,11 +132,17 @@ export default class MachineController{
             count++;
             return str == "disable"
         })
-        if(count == 0){
-            console.log("No machine disable !")
-        }else{
-            console.table(newArr)
+        try {
+            if(count == 0){
+                throw new Error("No machine disable !")
+            }else{
+                console.table(newArr)
+            }
+        } catch (error:any) {
+            console.log(error.message)
         }
+
+        
     }
 
     get arrMachineLength(){
