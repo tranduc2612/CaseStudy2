@@ -1,3 +1,2 @@
-duc,Duccpok123456,duc,21,duc@gmail.com 
-duong,Duccpok123456,duc,21,duc@gmail.com 
-minhduc,MinhDuc123456,duc2,23,minhduc@gmail.com
+trung,trung123,trung,21,trung@gmail.com
+hung,hung123,hung,21,hung@gmail.com

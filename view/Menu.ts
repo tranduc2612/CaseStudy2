@@ -51,6 +51,7 @@ export default class Menu{
                 this.controller.addService(index,12000);
                 break;
         }
+        this.controller.displayMachines();
         console.log("\n----------------------Add service successfully !-----------------------");
     }
     }
@@ -68,14 +69,16 @@ export default class Menu{
         7. Total money each machine
         8. Account management
         9. Total revenue
-        10. Exit
+        10. Find machine
+        11. Sorting machine by name
+        12. Exit
         --------------------------------------
         `
         console.log(menu)
         let n: number = 0;
-        while(n<1 || n>10){
+        while(n<1 || n>12){
             n = +(rl.question("Choose your number: "));
-            if(n<1 || n>10){
+            if(n<1 || n>12){
                 console.log("Please select a number 1 to 10 !")
             }
         }
@@ -140,7 +143,6 @@ export default class Menu{
             case 5:
                 this.controller.displayMachines();
                 this.handleService()
-                this.controller.displayMachines();
                 break;
             case 6:
                 let n6 = +(rl.question("Choose your money you want for each hour: "));
@@ -166,7 +168,7 @@ export default class Menu{
                         break;
                     case 2:
                         this.controller.displayMachines();
-                        this.handleService()
+                        this.handleService();
                         this.controller.displayMachines();
                         break;
                 }
@@ -196,12 +198,11 @@ export default class Menu{
                         console.log(str)
                         let b = +(rl.question("Choose your answer :"))
                         if(b == 1){
-                            this._AccountController.deleteUsers(index);
-                            console.log("\n----------------------Delete User successfully !-----------------------");
+                            this._AccountController.deleteUsers(index,this._MyAccount);
                         }
                         break;    
                     case 3:
-                        let currentPassword = rl.question("Current password:")
+                        let currentPassword = rl.question("Current password:");
                         let newPassword1 = rl.question("Your new password :");
                         let newPassword2 = rl.question("Your new password again:");
                         if(newPassword1 === newPassword2 && currentPassword === this._MyPassword){
@@ -215,7 +216,17 @@ export default class Menu{
                 console.log("\n----------------------Total revenue !-----------------------");
                 break;
             case 10:
-                return
+                let findMachine = rl.question("Enter your name machine you need find:");
+                this.controller.findMachine(findMachine);
+                break;
+            case 11:
+                this.controller.sortMachineByName();
+                this.controller.displayMachines();
+                console.log("\n----------------------Sorting Success !-----------------------");
+                break;    
+            case 12:
+                console.log("Thank iuu for using !!");
+                return;    
         }
         this.mainMenu()
     }

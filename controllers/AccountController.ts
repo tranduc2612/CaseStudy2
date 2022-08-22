@@ -8,10 +8,6 @@ export default class AccountController{
     private fileUser = new IOFile();
     private PATH = "./data/user.txt"
 
-    constructor(){
-        this.init();
-    }
-
     init(){
         let dataUser = this.fileUser.readFile(this.PATH)
         dataUser.forEach(e=>{
@@ -29,7 +25,7 @@ export default class AccountController{
         let temp : number = 0;
         let regex: RegExp = /^[1-3]$/;
 
-        while(temp < 1 ||temp > 3){
+        while(temp < 1 || temp > 3){
             let chooseUser = rl.question("Choose your function:");
             if(regex.test(chooseUser)){
                 temp = +(chooseUser)
@@ -38,7 +34,7 @@ export default class AccountController{
             }
 
             if(temp < 1 || temp > 3){
-                console.log("Please choose between 1 and 3")
+                console.log("Please choose between 1 and 3");
             }
         }
 
@@ -50,8 +46,10 @@ export default class AccountController{
                 this.register();
                 break;
             case 3:
-                return;
+                console.log("Thank iuu for using !!");
+                break;
         }
+        
     }
 
     login(){
@@ -67,7 +65,8 @@ export default class AccountController{
                 throw new Error("Account or Password are wrong !");
             }
         } catch (e:any) {
-            console.log(e.message)  ;
+            console.log(e.message);
+            this.init()
         }
         // this.login()
         console.log("---------------------------------------")
@@ -99,26 +98,27 @@ export default class AccountController{
                 if(!this.validatePassWord(newPassword)){
                     console.log("Password must has minimum eight characters, at least one letter and one number !\n")
                     isErrorRegister = true;
-                    continue
+                    this.init();
                 }
         
                 if(!this.validateEmail(newEmail)){
                     console.log("Invalid email !\n");
                     isErrorRegister = true;
-                    continue
+                    this.init();
                 }else{
                     if(this.listUser.some(e=>e.userEmail == newEmail)){
                         console.log("Email is already exist !\n");
                         isErrorRegister = true;
-                        continue
+                        this.init();
                     }
                 }
                 this.listUser.push(new User(newAccount,newPassword,newName,newAge,newEmail))
                 this.fileUser.writeFile(this.PATH,this.listUser)
+                this.displayAllUsers();
                 console.log("Create Account success !")
                 break;
             }else{
-                continue
+                this.init();
             }
         }
         console.log("------------------------------------------")
@@ -130,29 +130,42 @@ export default class AccountController{
         console.table(this.listUser);
     }
 
-    public deleteUsers(value: number){
-        let index = value;
-        this.listUser.splice(index,1)
-        console.table(this.listUser);
+    public deleteUsers(value: number,currentAccount: string){
+        try {
+            if(this.listUser[value].userAcount == currentAccount){
+                throw new Error("You can't not delete your account !")
+            }else{
+                this.listUser.splice(value,1);
+                this.writeData();
+                console.table(this.listUser);
+                console.log("\n----------------------Delete User successfully !-----------------------");
+            }
+        } catch (error:any) {
+            console.log(error.message);
+        }
+        
     }
     
     public changePassword(Account: string,checkPassword: string){
-        try {
-            if(!this.validatePassWord(checkPassword)){
-                throw new Error("Password must has minimum eight characters, at least one letter and one number !\n");
-            }else{
-                let newPassword = checkPassword
-                this.listUser.forEach(e=>{
-                    if(e.userAcount == Account){
-                        e.userPassWord = newPassword;
+        this.listUser.forEach(e=>{
+            if(e.userAcount == Account){
+                if(e.userPassWord == checkPassword){
+                    try {
+                        if(this.validatePassWord(checkPassword)){
+                            e.userPassWord = checkPassword;
+                            this.writeData();
+                        }else{
+                            throw new Error("Password must has minimum eight characters, at least one letter and one number !\n")
+                        }
+                    } catch (e:any) {
+                        console.log(e.message);
                     }
-                })
-                console.log("-------------------Change password Success------------------------")
+                    
+                }else{
+                    console.log("Current password mismatched !")
+                }
             }
-        } catch (error: any) {
-            console.log(error.message)
-        }
-        
+        })
     }
 
     validatePassWord(inputPassword : string){
@@ -164,6 +177,8 @@ export default class AccountController{
         let regex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         return regex.test(inputEmail);
     }
-}
 
-const test = new AccountController();
+    writeData(){
+        this.fileUser.writeFile(this.PATH,this.listUser);
+    }
+}

@@ -16,6 +16,8 @@ export default class MachineController{
         })
     }
 
+
+
     set moneyPerHour(value: number){
         this._moneyPerHour = value
     }
@@ -24,9 +26,22 @@ export default class MachineController{
         let inputNameMachine = rl.question("Machine name: ");
         let inputStatusMachine = rl.question("Machine status: ");
         let inputTimeUsed = parseInt(rl.question("Machine time use:"));
-        let newMachine = new Machine(inputNameMachine,inputStatusMachine,inputTimeUsed,0);
-        this.arrMachine.push(newMachine);
-        this.fileMachine.writeFile(this.PATH,this.arrMachine)
+        try {
+            if(this.arrMachine.some(e=>e.nameMachine === inputNameMachine)){
+                console.log("Machine name already exists!");
+            }else{
+                if(inputStatusMachine == "disable" || inputStatusMachine == "available"){
+                    let newMachine = new Machine(inputNameMachine.toLowerCase(),inputStatusMachine,inputTimeUsed,0);
+                    this.arrMachine.push(newMachine);
+                    this.writeData();
+                }else{
+                    throw new Error("Status machine wrong !!");
+                }
+            }
+        }catch (e:any) {
+            console.log(e.message);
+        }
+        
     }
 
     public displayMachines(): void{
@@ -40,10 +55,22 @@ export default class MachineController{
                 let newName = rl.question("Update machine name: ");
                 let newStatus = rl.question("Update machine status: ");
                 let newTimeUsed = parseInt(rl.question("Update machine time use: "));
-                this.arrMachine[indexInput] = new Machine(newName,newStatus,newTimeUsed,0)
-                this.fileMachine.writeFile(this.PATH,this.arrMachine)
-                console.log("----------------Update Success---------------")
-                this.displayMachines()
+                try {
+                    if(this.arrMachine.some(e=>e.nameMachine == newName)){
+                        console.log("Machine name already exist !")
+                    }else{
+                        if(newStatus == "available" || newStatus == "disable"){
+                            this.arrMachine[indexInput] = new Machine(newName.toLowerCase(),newStatus,newTimeUsed,0)
+                            this.writeData();
+                            console.log("----------------Update Success---------------");
+                            this.displayMachines()
+                        }else{
+                            throw new Error("Status machine Error !! ")
+                        }
+                    }
+                } catch (e:any) {
+                    console.log(e.message);
+                }
             }else{
                 throw new Error("Error index !")
             }
@@ -56,7 +83,7 @@ export default class MachineController{
     public deleteMachine(value: number){
         let index = value;
         this.arrMachine.splice(index,1)
-        this.fileMachine.writeFile(this.PATH,this.arrMachine)
+        this.writeData();
         console.table(this.arrMachine);
     }
 
@@ -65,15 +92,25 @@ export default class MachineController{
         try{
             if(this.arrMachine.findIndex((e,index)=>indexInput == index) != -1){
                 this.arrMachine[indexInput].totalMoney += price;
-                this.fileMachine.writeFile(this.PATH,this.arrMachine)
-                console.table(this.arrMachine)
+                this.writeData();
             }else{
-                throw new Error("Error index !")
+                throw new Error("Error index !");
             }
         }catch(error: any){
-            console.log(error.message)
+            console.log(error.message);
         }
     }
+
+    public findMachine(nameInput : string){
+        if(this.arrMachine.some(e=>e.nameMachine==nameInput)){
+           console.table(this.arrMachine.filter(e=>e.nameMachine==nameInput)) 
+           console.log("\n----------------------Find Success!-----------------------");
+        }else{
+            console.log("\n----------------------Can't not find machine !!-----------------------");
+        }   
+    }
+
+    
 
     public totalMoneyMachineAvailable(){
         this.arrMachine.forEach(e=>{
@@ -82,7 +119,10 @@ export default class MachineController{
                 e.totalMoney = e.timeUsed*this._moneyPerHour
             }
         })
-        
+    }
+
+    public writeData(){
+        this.fileMachine.writeFile(this.PATH,this.arrMachine);
     }
 
     public billMachineAvailable(index: number){
@@ -93,8 +133,13 @@ export default class MachineController{
         newArr[index].statusMachine = "disable"
         newArr[index].totalMoney = 0
         newArr[index].timeUsed = 0 
+        this.writeData();
     }
 
+    public sortMachineByName(){
+        console.table(this.arrMachine.sort());
+        this.writeData();
+    }
 
     public displayMachineAvailable(){
         let count = 0;
@@ -141,8 +186,6 @@ export default class MachineController{
         } catch (error:any) {
             console.log(error.message)
         }
-
-        
     }
 
     get arrMachineLength(){
