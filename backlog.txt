@@ -1,0 +1,74 @@
+Menu (Đăng nhập và đăng kí) - (Sản phẩm làm ra để phục vụ thằng admin)
+- Login :
+ + (Show file text để xem dữ liệu) 
+ + Nhập sai sẽ quay lại hàm init
+ + Nhập đúng sẽ vào Menu 
+- Register : 
+ + (Show file text để xem ghi dữ liệu)
+ +  Nếu nhập sai 1 trường dữ liệu(validate) thì sẽ không ghi vào file và sẽ văng ra màn hình Menu
++ exit :
+ + Thoát chương trình
+
+
+Menu Chính
+1, Show all machine
+ + (Show file machine.txt để xem dữ liệu có sẵn)
+ + đưa vào menu phụ
+   * Đưa ra các máy đang hoạt động
+   * Đưa ra các máy không hoạt động
+   * Đưa ra tất cả các máy
+ + Khi chạy xong sẽ quay lại màn hình Menu chính
+
+2, Add machine
+ + (Show file machine.txt để xem dữ liệu có sẵn)
+ + Chúng ta sẽ phải nhập các trường như (tên máy, trạng thái máy, thời gian sử dụng);
+ + Nếu nhập sai trạng thái máy thì sẽ không thể thêm máy vào dữ liệu file text (show file text);
+
+3, Update machine
+ + Hiện ra tất cả các máy xuất hiện dưới dạng bảng ở trong console để người dùng dễ dàng quan sát và thay đổi
+ + Chọn giá trị index mà mình muốn thay đổi (Nếu nhập sai index sẽ văng lại menu chính và in ra lỗi index)
+ + Nếu nhập đúng index: Chúng ta sẽ phải nhập các trường (vẫn validate tình trạng máy nếu nhập sai thì sẽ không thêm vào được file text)
+ + Khi nhập xong sẽ xuất hiện 1 bảng dữ liệu trên console để cho người dùng dễ dàng xem mình đã cập nhật thành công chưa + (show file text để xem đã được cập nhật vào text chưa)
+
+4, Delete machine
+ + Hiện ra tất cả các máy xuất hiện dưới dạng bảng ở trong console để người dùng dễ dàng quan sát và xóa
+ + Chọn giá trị index mà mình muốn xóa (Nếu nhập sai index sẽ văng lại menu chính và in ra lỗi index)
+ + Nếu nhập đúng index: sẽ show menu phụ hỏi bạn có muốn xóa không ?
+     * Nếu có thì sẽ show ra bảng trên console với dữ liệu đã xóa (show vào file text cũng đã bị xóa)
+     * Nếu có thì sẽ quay lại màn hình Menu chính
+
+5, Add service
+ + Hiện ra tất cả các máy xuất hiện dưới dạng bảng ở trong console để người dùng dễ dàng quan sát và thêm vào đó các dịch vụ
+ + Nêu nhập sai index sẽ quay lại menu chính và in ra lỗi
+ + Nếu nhập đúng index: sẽ văng ra menu phụ ra các dịch vụ (Nếu người dùng nhập sai vẫn phải nhập lại index đó)
+ + Khi đó bill sẽ được tính thẳng vào tổng số tiền luôn (show ra list machine trên console để xem đã được update lại chưa)
+
+6, Change money/hour
+ + Thay đổi giá tính theo mỗi giờ chơi (mặc định là đang 5k / 1h);
+ 
+
+7, Total money each machine (Tính tổng tiền chơi mỗi máy)
+ + In ra menu phụ 
+     * 1. tính bill
+ 	+ In ra bảng console các máy available (có tính giá tiền rồi nma chưa được ghi vào dữ liệu machine.txt)
+ 	+ Chỉ khi người dùng chọn ra máy muốn tính bill thì sẽ lưu vào file text (thì tất cả thông số đó sẽ quay về mặc định)
+     * 2. thêm dịch vụ
+	Quay lại chức năng 5 
+8, Account management
+ + In ra màn hình phụ
+   1. in ra các account (In ra bảng user trên console) 
+   2. xóa tài khoản (Chọn ra index account muốn xóa - cập nhật vào text - Không thể xóa tài khoản mình đang đăng nhập)
+   3. Thay đổi mật khẩu của tài khoản đang đăng nhập
+
+9, Total revenue
+ + Tính được tổng doanh thu của quán hôm đó ...
+
+10, Find machine
+ + Đưa ra máy muốn tìm
+ + nếu nhập tên máy có trong list sẽ in ra console thông tin của máy đó còn không thì sẽ in ra chữ ko tìm thấy
+
+11, Sorting machine by name (sắp xếp theo tên của máy)
+ + Sẽ sắp xếp thông tin máy theo tên của máy
+
+12, Exit
+ + Thoát chương trình xuất hiện 1 câu nói thân thương :,>

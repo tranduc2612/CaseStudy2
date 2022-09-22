@@ -15,6 +15,6 @@ may14,disable,0,0
 may15,disable,0,0
 may16,disable,0,0
 may17,disable,0,0
-may18,disable,0,0
 may19,disable,0,0
-may21,available,12,60000
+may21,available,12,120
+may23,disable,0,0
